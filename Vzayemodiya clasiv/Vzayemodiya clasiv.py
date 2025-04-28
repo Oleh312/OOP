@@ -1,45 +1,60 @@
+# Оголошення класу банківського рахунку
 class BankAccount:
+    # Конструктор класу, ініціалізує власника та баланс
     def __init__(self, owner, balance=0):
-        self.owner = owner
-        self.balance = balance
+        self.owner = owner  # Власник рахунку
+        self.balance = balance  # Баланс рахунку (за замовчуванням 0)
     
+    # Метод для внесення коштів на рахунок
     def deposit(self, amount):
-        if amount > 0:
-            self.balance += amount
-            print(f"{amount} грн додано. Баланс: {self.balance} грн")
+        if amount > 0:  # Перевірка, що сума більша за 0
+            self.balance += amount  # Додавання суми до балансу
+            print(f"{amount} грн додано. Баланс: {self.balance} грн")  # Вивід повідомлення про успішний депозит
         else:
-            print("Сума для депозиту має бути більше 0.")
+            print("Сума для депозиту має бути більше 0.")  # Повідомлення про помилку
     
+    # Метод для зняття коштів з рахунку
     def withdraw(self, amount):
-        if 0 < amount <= self.balance:
-            self.balance -= amount
-            print(f"{amount} грн знято. Баланс: {self.balance} грн")
+        if 0 < amount <= self.balance:  # Перевірка, що сума коректна і достатньо коштів
+            self.balance -= amount  # Зменшення балансу на вказану суму
+            print(f"{amount} грн знято. Баланс: {self.balance} грн")  # Вивід повідомлення про успішне зняття
         else:
-            print("Недостатньо коштів або невірна сума.")
+            print("Недостатньо коштів або невірна сума.")  # Повідомлення про помилку при знятті
 
 
+# Оголошення класу для здійснення транзакцій між рахунками
 class Transaction:
+    # Конструктор класу, приймає відправника, отримувача і суму
     def __init__(self, sender, receiver, amount):
-        self.sender = sender
-        self.receiver = receiver
-        self.amount = amount
+        self.sender = sender  # Відправник коштів
+        self.receiver = receiver  # Отримувач коштів
+        self.amount = amount  # Сума транзакції
     
+    # Метод для виконання транзакції
     def execute(self):
-        if self.sender.balance >= self.amount:
-            self.sender.withdraw(self.amount)
-            self.receiver.deposit(self.amount)
-            print(f"Транзакція: {self.amount} грн від {self.sender.owner} до {self.receiver.owner} завершена.")
+        if self.sender.balance >= self.amount:  # Перевірка, чи у відправника достатньо коштів
+            self.sender.withdraw(self.amount)  # Зняття коштів з рахунку відправника
+            self.receiver.deposit(self.amount)  # Поповнення рахунку отримувача
+            print(f"Транзакція: {self.amount} грн від {self.sender.owner} до {self.receiver.owner} завершена.")  # Повідомлення про успішну транзакцію
         else:
-            print("Транзакція не можлива. Недостатньо коштів.")
+            print("Транзакція не можлива. Недостатньо коштів.")  # Повідомлення про невдалу транзакцію
 
-# Приклад використання
+# --- Приклад використання ---
+
+# Створення об'єкта банківського рахунку для Олександра з початковим балансом 500 грн
 acc1 = BankAccount("Олександр", 500)
+
+# Створення об'єкта банківського рахунку для Марії з початковим балансом 300 грн
 acc2 = BankAccount("Марія", 300)
 
+# Створення об'єкта транзакції: перевести 200 грн від Олександра до Марії
 transaction = Transaction(acc1, acc2, 200)
+
+# Виконання транзакції
 transaction.execute()
 
-# Перевірка залишку
+# Перевірка залишку на рахунку Олександра
 print(f"Баланс {acc1.owner}: {acc1.balance} грн")
-print(f"Баланс {acc2.owner}: {acc2.balance} грн")
 
+# Перевірка залишку на рахунку Марії
+print(f"Баланс {acc2.owner}: {acc2.balance} грн")
